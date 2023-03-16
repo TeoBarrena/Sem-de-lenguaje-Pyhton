@@ -1,7 +1,7 @@
 from random import choice, randrange
 from datetime import datetime
 # Operadores posibles
-operators = ["+", "-", "*", "//"]
+operators = ["+", "-", "*", "/"]
 # Cantidad de cuentas a resolver
 times = 5
 # Contador inicial de tiempo.
@@ -16,6 +16,10 @@ for i in range(0, times):
     number_2 = randrange(10)
     operator = choice(operators)
 
+    #para que nunca se presente una division por 0 hago este condicional
+    if operator == "/":
+        while number_2 == 0:
+            number_2 = randrange(10)
     # Se imprime la cuenta.
     print(f"{i+1}- ¿Cuánto es {number_1} {operator} {number_2}?")
     # Le pedimos al usuario el resultado
@@ -27,7 +31,7 @@ for i in range(0, times):
     elif operator == "*":
         res = number_1 * number_2
     else:
-        res = number_1 // number_2
+        res = number_1 / number_2
     if int(result) == res: #aca se convierte a entero el valor de result que esta como string
         print("Correcto!")
         cantCorrectas +=1 
