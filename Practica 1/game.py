@@ -23,7 +23,7 @@ for i in range(0, times):
     if operator == "+":
         res = number_1 + number_2
     elif operator == "-":
-        res = number_1 + number_2
+        res = number_1 - number_2
     elif operator == "*":
         res = number_1 * number_2
     else:
