@@ -27,7 +27,7 @@ The NumPy project welcomes your expertise and enthusiasm!
 Small improvements or fixes are always appreciated. If you are considering larger contributions to the source code, please contact us through the mailing list first.
 
 Writing code isn’t the only way to contribute to NumPy. You can also: 
-hola hola hola hola hola hola hola hola hola hola hola hola hola hola hola hola hola #aparece 17 veces
+
 review pull requests 
 help us stay on top of new and old issues 
 develop tutorials, presentations, and other educational materials
@@ -39,32 +39,28 @@ write grant proposals and help with other fundraising efforts
 For more information about the ways you can contribute to NumPy, visit our website. If you’re unsure where to start or how your skills fit in, reach out! You can ask on the mailing list or here, on GitHub, by opening a new issue or leaving a comment on a relevant issue that is already open.
 
 Our preferred channels  of communication are all public, but if you’d like to speak to us in private first, contact our community coordinators at numpy-team@googlegroups.com or on Slack (write numpy-team@googlegroups.com for an invitation).
-hola #esta no la cuenta 
-hola hola #aca suma 1 a la palabra"hola", en vez de sumarle 2
+
 We also have a biweekly community call, details of which are announced on the mailing list. You are very welcome to join. 
 
 If you are new to contributing to open source, this guide helps explain why, what, and how to successfully get involved."""
 quitar = "¿¡.,:++;+/'’\"\n()[]{}!-//?"
 for car in quitar:
-    cadena = cadena.replace(car, "")
+    cadena = cadena.replace(car, " ")#saca el caracter que si es de los que estan en quitar y lo reemplaza por un espacio en blanco por eso si saca en los links crea un espacio entre por ejemplo: www.doc quedaria como "www" "doc" en vez de "wwwdoc"
 
 cadena = cadena.lower()
 
-palabras = cadena.split(" ")
+palabras = cadena.split()
 
 diccionario_cant = {}
-
 for palabra in palabras:
     if palabra in diccionario_cant:
         diccionario_cant[palabra] +=1
     else:
         diccionario_cant[palabra] = 1
-
 Cantmax = 0
 palabraMax = ""
 
 for palabra in diccionario_cant:
-
     print (f"La palabra: {palabra} aparece {diccionario_cant[palabra]} veces")
 
 for palabra in diccionario_cant:
@@ -73,4 +69,3 @@ for palabra in diccionario_cant:
         palabraMax = palabra
 
 print(f"La palabra que mas veces aparece es: {palabraMax}, {Cantmax} veces")
-
