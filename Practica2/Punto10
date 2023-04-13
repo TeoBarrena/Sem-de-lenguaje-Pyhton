@@ -1,29 +1,44 @@
-
-
-def CalcularPromedio():
-    dictProm = {}
+def generarDict():
+    dictNotas = {}
     i = 0
     while(i < len(notas_1)):
-        nota = notas_1[i] + notas_2[i]
-        dictProm[nombres[i]] = nota/2
+        dictNotas[nombres[i]] = (notas_1[i],notas_2[i])
         i +=1
-    return dictProm
+    return dictNotas 
+
+def CalcularPromedio(alumnos):
+    for elem in alumnos:
+        #prom = 0
+        prom = (alumnos[elem][0] + alumnos[elem][1])/2 #aca accede al alumno y sus notas 
+        print(f"El alumno {elem} tuvo un promedio de {prom}")
 
 #utilizo el diccionario que cree anteriormente que tiene el nombre del alumno y el promedio obtenido
-def CalcularPromedioGeneral(prom):
+def CalcularPromedioGeneral(alumnos):
     total = 0
-    for elem in prom:
-        total += prom[elem] #el total guarda la suma de todos los promedios obtenidos por cada alumno y a esto lo divide por 47 
-    return total/len(notas_1)
-
-def notaMasBaja():
-    nombre = ''
-
+    for elem in alumnos:
+        #total = sum(alumnos.values(elem))
+        total += alumnos[elem][0] + alumnos[elem][1] #el total guarda la suma de todos los promedios obtenidos por cada alumno y a esto lo divide por 47 
+    print(f"Total:{total}")
+    return total/len(notas_1)    
+    
+def notaMasBaja(alumnos):
+    min = 9999
+    for elem in alumnos:
+        if alumnos[elem][0] < min:
+            nombre = elem
+            min = alumnos[elem][0]
+        if alumnos[elem][1] < min:
+            nombre = elem   
+            min = alumnos[elem][1]
     return nombre
 
-def notaPromedioMasAlta():
-    nombre = ''
-
+def notaPromedioMasAlta(alumnos): #tenia pensado que en la funcion calcularPromedio retorne un diccionario {nombre:prom} y usarlo aca en vez de tener que recorrer de vuelta haciendo el prom
+    max = -1
+    for elem in alumnos:
+        prom = (alumnos[elem][0] + alumnos[elem][1])/2
+        if prom > max:
+            nombre = elem
+            max = prom
     return nombre
 
 
@@ -38,8 +53,15 @@ notas_2 = [30, 95, 28, 84, 84, 43, 66, 51, 4, 11, 58, 10, 13, 34, 96, 71, 86, 37
 64, 13, 8, 87, 14, 14, 49, 27, 55, 69, 77, 59, 57, 40, 96, 24, 30, 73,
 95, 19, 47, 15, 31, 39, 15, 74, 33, 57, 10]
 
-promedio = CalcularPromedio()
-print (f"El diccionario con los promedios de cada alumno es el siguiente:\n {promedio}")
 print()
-print (f"El promedio general del curso es {CalcularPromedioGeneral(promedio)}")
-print (f"El alumno con nota mas baja es: {notaMasBaja}")
+estudiantes = generarDict()
+print(f"Estudiantes: \n{estudiantes}")
+print()
+CalcularPromedio(estudiantes)
+print()
+print (f"El alumno con nota mas baja es: {notaMasBaja(estudiantes)}")
+print()
+print(f"El alumno con promedio mas alto es {notaPromedioMasAlta(estudiantes)}")
+print()
+print(f"El promedio general del curso es {CalcularPromedioGeneral(estudiantes)}")
+#print(alumnos[elem]) imprime las notas de cada estudiante
