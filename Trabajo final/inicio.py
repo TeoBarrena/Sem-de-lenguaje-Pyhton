@@ -1,22 +1,21 @@
 import PySimpleGUI as sg
-import addPerfil as add
+import crear_perfil as perfil
 
 lista_perfiles=[]
 sg.ChangeLookAndFeel('LightGrey4')
 
-layout = [[sg.Text('UNLPImage',size=(30,30),justification='c',font=("Helvetica",15))],
-          [sg.Button('Agregar perfil')],
-          [sg.Button('Mostrar datos')],
-          [sg.Button('Cerrar')]]
+layout = [[sg.Text('UNLPImage', size=(50, 2), justification='left', font=('Helvetica', 15))],
+          [sg.Button('Agregar perfil', size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12)), sg.Button('Mostrar datos', size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12)), sg.Button('Cerrar', size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12))]]
 
-window = sg.Window("",layout,margins=(100,100))
+window = sg.Window('', layout, element_justification='c', margins=(150, 200))
+
 while True:
     event,values = window.read()
 
     if event == ('Cerrar') or event == sg.WIN_CLOSED:
         break
     if event == 'Agregar perfil':
-        add.agregar_perfil(lista_perfiles)
+        perfil.agregar_perfil(lista_perfiles)
     if event == 'Mostrar datos':
-        add.mostrarPerfil(lista_perfiles)
+        perfil.mostrar_perfiles(lista_perfiles)
 window.close()
