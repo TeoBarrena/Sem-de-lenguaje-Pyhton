@@ -1,10 +1,9 @@
 import PySimpleGUI as sg
 import os
 import json
-
 ruta_imagen = os.path.join(os.getcwd(),"Fotos","usuario.png")
 
-def agregar_perfil():
+def agregar_perfil(lista_fotos):
     if os.path.exists('perfiles.txt'):
         archivo = open("perfiles.txt",'a')
     else:
@@ -32,20 +31,21 @@ def agregar_perfil():
             archivo_avatar = sg.popup_get_file('Seleccionar avatar', no_window=True)
             window['-AVATAR_IMAGE-'].update(filename=archivo_avatar, size=(150, 150))
         if event=='Guardar':
-            print(archivo)
             alias = values[0]
             nombre=values[1]
             edad = values[2]
             foto = archivo_avatar
+            lista_fotos.append(foto)#corregir no anda bien
             if values['Genero'] == "Selecciona una opcion": #si values['Genero] es igual a "selecciona una opcion" significa que no se eligio ni M ni F entonces busca en la posicion del boton "Otro"
                 genero = values['OtroGenero']
             else: # si es distinto significa que eligio M o F entonces asigna
                 genero = values['Genero']
             datos = {"Nombre": nombre,"Edad": edad,"Alias":alias,"Genero":genero,"Foto":foto}
             json.dump(datos,archivo,indent= 2)
-            archivo.close()            
+            archivo.close()   
+            sg.popup('Perfil creado con éxito')         
             break
     window.close()
-
+    return lista_fotos
 
 
