@@ -2,52 +2,88 @@ import PySimpleGUI as sg
 import os, io
 import crear_perfil as perfil
 from PIL import Image, ImageDraw
-
-lista_perfiles=[]
+import json
 sg.ChangeLookAndFeel('LightGrey4')
 
-def convert_to_bytes(file_or_bytes, resize=None):
-   img = Image.open(file_or_bytes)
-   with io.BytesIO() as bio:
-      img.save(bio, format="PNG")
-      del img
-      return bio.getvalue()
 
+if os.path.exists('perfiles.json'):
+    with open('perfiles.json','r') as archivo:
+        datos = json.load(archivo)
+        lista_fotos = list(map(lambda elem : elem["Foto"],datos))
+        for foto in lista_fotos:
+            print(f"Ruta imagen {foto}")
+else:
+    with open('perfiles.json','w') as archivo:
+        lista_fotos=[]
 
-#ruta_fotos1 = convert_to_bytes(os.path.join(os.getcwd(),"Fotos","meme2.png"))
-#ruta_fotos2= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","flecha2.png"))
-#ruta_fotos3= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","flecha.png"))
-#ruta_fotos4= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","usuario.png"))
-#ruta_fotos5= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","Gato2.jpg"))
-#ruta_fotos12 = convert_to_bytes(os.path.join(os.getcwd(),"Fotos","gatopng.png"))
-#ruta_fotos22= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","gatopng2.png"))
-#ruta_fotos32= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","perro.jpg"))
-#ruta_fotos42= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","Gato1.jpg"))
-#ruta_fotos52= convert_to_bytes(os.path.join(os.getcwd(),"Fotos","Gato2.jpg"))
+ruta_imagen = os.path.join(os.getcwd(),"Fotos","usuario.png")
 
-#lista_fotos = [ruta_fotos1, ruta_fotos2, ruta_fotos3, ruta_fotos4]# ruta_fotos5, ruta_fotos12, ruta_fotos22, ruta_fotos32, ruta_fotos42, ruta_fotos52]
-lista_fotos = []
-def perfiles(lista_fotos):
-    botonera = []
-    for i in range(len(lista_fotos)):
-        botonera.append(sg.Button(size=(20, 2), button_color=('black', 'white'), image_data=lista_fotos[int(i)], image_size=(100,100),image_subsample=5))
-    botonera.append(sg.Button('+', size=(5, 2), button_color=('white', 'grey'), font=('Helvetica', 25),key='agregar_perfil'))
-    return botonera
+#si el archivo existe y tiene perfiles cargados entra en el if y carga las fotos de los usuarios
+if(len(lista_fotos) > 0):
+    i = 0
+    #esto lo hago para que no tire error con algunas fotos, para que acepte cualquier tipo de foto
+    for foto in lista_fotos:
+        with open(foto, 'rb') as file:
+            img_bytes = file.read()
+            image = Image.open(io.BytesIO(img_bytes))
+            image.thumbnail((150, 150))
+            bio = io.BytesIO()
+            image.save(bio, format='PNG')
+            lista_fotos[i] = bio.getvalue()
+            i+=1
+    imagenes = [sg.Image(foto) for foto in lista_fotos]
+#sino pone la predeterminada
+else:
+    imagenes = [sg.Image(ruta_imagen)]
 
 layout = [[sg.Text('UNLP-Image', size=(50, 2), font=('Times New Roman', 50), text_color='Black', justification=("c"))],
-        [perfiles(lista_fotos)],
+        [*imagenes],
+        [sg.Button("Agregar perfil",key='agregar_perfil')],
         [sg.Button('Cerrar',size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12))]]
 
-
+#crea la ventana
 window = sg.Window('Inicio', layout, element_justification='c', size=(1080,720))
 
 while True:
     event,values = window.read()
-
+    #cerrado
     if event == ('Cerrar') or event == sg.WIN_CLOSED:
         break
+    
     if event ==('agregar_perfil'):
-        lista_fotos = perfil.agregar_perfil(lista_fotos)
-        layout[1]=perfiles(lista_fotos)#corregir no anda bien
-        window.refresh()#corregir no anda bien
+        window.hide()
+        perfil.agregar_perfil()
+        window.UnHide()
+
+        #abris el archivo JSON para cargar las nuevas fotos
+        with open('perfiles.json', 'r') as archivo:
+            datos = json.load(archivo)
+            lista_fotos = [elem["Foto"] for elem in datos]
+
+        #se puede dar que pones agregar perfil y volves atras sin cargar nada entonces se toma ese caso tambien por las dudas
+        if(len(lista_fotos) > 0):
+            i = 0
+            #esto lo hago para que no tire error con algunas fotos, para que acepte cualquier tipo de foto
+            for foto in lista_fotos:
+                with open(foto, 'rb') as file:
+                    img_bytes = file.read()
+                    image = Image.open(io.BytesIO(img_bytes))
+                    image.thumbnail((150, 150))
+                    bio = io.BytesIO()
+                    image.save(bio, format='PNG')
+                    lista_fotos[i] = bio.getvalue()
+                    i+=1
+            imagenes = [sg.Image(foto) for foto in lista_fotos]
+        else:
+            imagenes = [sg.Image(ruta_imagen)]
+        #se crea un nuevo layout actualizado
+        layout = [[sg.Text('UNLP-Image', size=(50, 2), font=('Times New Roman', 50), text_color='Black', justification=("c"))],
+                [*imagenes],
+                [sg.Button("Agregar perfil",key='agregar_perfil')],
+                [sg.Button('Cerrar',size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12))]]
+        #cerras ventana vieja
+        window.close()
+        #creas ventana nueva actualizada
+        window = sg.Window('Inicio', layout, element_justification='c', size=(1080, 720))
+
 window.close()
