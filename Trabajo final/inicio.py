@@ -1,10 +1,10 @@
 import PySimpleGUI as sg
 import os, io
 import crear_perfil as perfil
+import editar_perfil as editar
 from PIL import Image, ImageDraw
 import json
 sg.ChangeLookAndFeel('LightGrey4')
-
 
 if os.path.exists('perfiles.json'):
     with open('perfiles.json','r') as archivo:
@@ -15,7 +15,6 @@ if os.path.exists('perfiles.json'):
 else:
     with open('perfiles.json','w') as archivo:
         lista_fotos=[]
-
 ruta_imagen = os.path.join(os.getcwd(),"Fotos","usuario.png")
 
 #si el archivo existe y tiene perfiles cargados entra en el if y carga las fotos de los usuarios
@@ -39,6 +38,7 @@ else:
 layout = [[sg.Text('UNLP-Image', size=(50, 2), font=('Times New Roman', 50), text_color='Black', justification=("c"))],
         [*imagenes],
         [sg.Button("Agregar perfil",key='agregar_perfil')],
+        [sg.Button("Editar perfil", key = 'editar_perfil')],
         [sg.Button('Cerrar',size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12))]]
 
 #crea la ventana
@@ -80,10 +80,16 @@ while True:
         layout = [[sg.Text('UNLP-Image', size=(50, 2), font=('Times New Roman', 50), text_color='Black', justification=("c"))],
                 [*imagenes],
                 [sg.Button("Agregar perfil",key='agregar_perfil')],
+                [sg.Button("Editar perfil",key='editar_perfil')],
                 [sg.Button('Cerrar',size=(20, 2), button_color=('white', 'grey'), font=('Helvetica', 12))]]
         #cerras ventana vieja
         window.close()
         #creas ventana nueva actualizada
         window = sg.Window('Inicio', layout, element_justification='c', size=(1080, 720))
+
+
+    if event ==('editar_perfil'):
+        alias = sg.PopupGetText("Ingrese alias")
+        editar.editar_perfil(alias)
 
 window.close()

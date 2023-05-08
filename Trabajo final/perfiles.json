@@ -1,0 +1,23 @@
+[
+  {
+    "Nombre": "teo probando",
+    "Edad": 20244,
+    "Alias": "teo",
+    "Genero": "Masculino",
+    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/meme3.png"
+  },
+  {
+    "Nombre": "piecaca",
+    "Edad": 192,
+    "Alias": "pieri",
+    "Genero": "Masculino",
+    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/flecha2.png"
+  },
+  {
+    "Nombre": "sadfasfdasfd",
+    "Edad": 23,
+    "Alias": "asdasfasdf",
+    "Genero": "Masculino",
+    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gato.png"
+  }
+]

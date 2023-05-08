@@ -47,9 +47,9 @@ def agregar_perfil():
                         window['-AVATAR_IMAGE-'].update(data=bio.getvalue())
                 except Exception as e:
                     sg.popup_error(f'Error al cargar la imagen: {e}')
-            print(f"EL VALOR DE BIO ES {bio.getvalue()}")
+        
         #cerrado
-        if event=="CANCELAR" or event== sg.WINDOW_CLOSED or event == "< Volver":
+        if event== sg.WINDOW_CLOSED or event == "< Volver":
             break
 
         #guardado del perfil
@@ -71,6 +71,7 @@ def agregar_perfil():
                     sg.popup('Por favor ingrese un número entero válido para la edad.')
                     event, values = window.read()#se declara de vuelta para que lea el nuevo valor de edad ingresado
                     continue
+            #en esta variable se guarda la foto que eligio
             foto = ruta_imagen
 
             #como guardar el genero
