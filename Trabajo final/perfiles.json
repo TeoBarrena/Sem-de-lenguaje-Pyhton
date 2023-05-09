@@ -61,5 +61,12 @@
     "Alias": "vcbxcvb",
     "Genero": "Masculino",
     "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gato.png"
+  },
+  {
+    "Nombre": "lolero",
+    "Edad": 32,
+    "Alias": "lolero",
+    "Genero": "Femenino",
+    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/ayudaa.png"
   }
 ]

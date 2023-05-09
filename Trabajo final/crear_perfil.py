@@ -29,7 +29,7 @@ def agregar_perfil():
           [sg.Input()],
           [sg.Text('Genero autopercibido',font=('Helvetica',10))],
           [sg.Combo(['Masculino','Femenino','Otro'],default_value='Selecciona una opcion',key='Genero',size=(30,1),readonly=True)], #combo es una lista desplegable
-          [sg.Image(ruta_imagen,subsample=10 , key='-AVATAR_IMAGE-')],
+          [sg.Image(ruta_imagen, key='-AVATAR_IMAGE-')],
           [sg.Button("Seleccionar avatar",key='-AVATAR-')],
           [sg.Button('Guardar',pad=(400,10),size=(8,2),button_color=('sky blue'))]]
     window= sg.Window("Crear nuevo perfil",layout,size=(1366,768))
@@ -101,11 +101,12 @@ def agregar_perfil():
             #agregar al archivo JSON
             with open('perfiles.json','w') as archivo:
                 json.dump(datos,archivo,indent= 2)
-                archivo.write('\n') # se agrega un salto de línea para escribir la siguiente lista en la siguiente línea
-            sg.popup('Perfil creado con éxito')         
+                archivo.write('\n') # se agrega un salto de línea para escribir la siguiente lista en la siguiente línea         
+            #agregar nueva operacion al archivo CSV
             with open ('perfiles.csv','a',newline='') as archivo:
                 writer = csv.writer(archivo)
                 writer.writerow([fecha,hora,datos[-1]["Alias"],"Creo perfil"]) 
+            sg.popup('Perfil creado con éxito')
             break
     window.close()
     return datos[-1]
