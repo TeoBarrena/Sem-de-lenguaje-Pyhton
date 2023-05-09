@@ -1,11 +1,15 @@
 import PySimpleGUI as sg
 import os,io
 import json
-from PIL import Image, ImageDraw
-
+from PIL import Image
+import datetime
+import csv
 datos =[]
 
+
 def agregar_perfil():
+    hora = datetime.datetime.now().time()
+    fecha = datetime.date.today().strftime("%d/%m/%Y")
     global datos
     #imagen predeterminada
     ruta_imagen = os.path.join(os.getcwd(),"Fotos","usuario.png")
@@ -24,11 +28,11 @@ def agregar_perfil():
           [sg.Text('Edad',font=('Helvetica',10))],
           [sg.Input()],
           [sg.Text('Genero autopercibido',font=('Helvetica',10))],
-          [sg.Combo(['Masculino','Femenino','Otro'],default_value='Selecciona una opcion',key='Genero',size=(30,1))], #combo es una lista desplegable
-          [sg.Image(ruta_imagen,key='-AVATAR_IMAGE-',size=(150,100))],
+          [sg.Combo(['Masculino','Femenino','Otro'],default_value='Selecciona una opcion',key='Genero',size=(30,1),readonly=True)], #combo es una lista desplegable
+          [sg.Image(ruta_imagen,subsample=10 , key='-AVATAR_IMAGE-')],
           [sg.Button("Seleccionar avatar",key='-AVATAR-')],
           [sg.Button('Guardar',pad=(400,10),size=(8,2),button_color=('sky blue'))]]
-    window= sg.Window("Crear nuevo perfil",layout,margins=(100,100))
+    window= sg.Window("Crear nuevo perfil",layout,size=(1366,768))
     
     while True:
         event,values = window.read()
@@ -38,18 +42,21 @@ def agregar_perfil():
             ruta_imagen = sg.popup_get_file('Seleccionar avatar', no_window=True, file_types=(('Imagenes', '*.png *.jpg *.jpeg *.gif *.bmp *.tiff'),))
             if ruta_imagen:
                 try:
-                    with open(ruta_imagen, 'rb') as file:
-                        img_bytes = file.read()
-                        image = Image.open(io.BytesIO(img_bytes))
-                        image.thumbnail((150, 150))
-                        bio = io.BytesIO()
-                        image.save(bio, format='PNG')
-                        window['-AVATAR_IMAGE-'].update(data=bio.getvalue())
+                    if(ruta_imagen == ""):
+                        ruta_imagen = os.path.join(os.getcwd(),"Fotos","usuario.png")
+                    else:
+                        with open(ruta_imagen, 'rb') as file:
+                            img_bytes = file.read()
+                            image = Image.open(io.BytesIO(img_bytes))
+                            image.thumbnail((150, 150))
+                            bio = io.BytesIO()
+                            image.save(bio, format='PNG')
+                            window['-AVATAR_IMAGE-'].update(data=bio.getvalue())
+
                 except Exception as e:
                     sg.popup_error(f'Error al cargar la imagen: {e}')
-        
         #cerrado
-        if event== sg.WINDOW_CLOSED or event == "< Volver":
+        if event=="CANCELAR" or event== sg.WINDOW_CLOSED or event == "< Volver":
             break
 
         #guardado del perfil
@@ -71,7 +78,6 @@ def agregar_perfil():
                     sg.popup('Por favor ingrese un número entero válido para la edad.')
                     event, values = window.read()#se declara de vuelta para que lea el nuevo valor de edad ingresado
                     continue
-            #en esta variable se guarda la foto que eligio
             foto = ruta_imagen
 
             #como guardar el genero
@@ -92,11 +98,14 @@ def agregar_perfil():
                    elif nuevo_alias not in datos:
                         datos[-1]['Alias'] = nuevo_alias
                         break
-                   
             #agregar al archivo JSON
             with open('perfiles.json','w') as archivo:
                 json.dump(datos,archivo,indent= 2)
                 archivo.write('\n') # se agrega un salto de línea para escribir la siguiente lista en la siguiente línea
             sg.popup('Perfil creado con éxito')         
+            with open ('perfiles.csv','a',newline='') as archivo:
+                writer = csv.writer(archivo)
+                writer.writerow([fecha,hora,datos[-1]["Alias"],"Creo perfil"]) 
             break
     window.close()
+    return datos[-1]
