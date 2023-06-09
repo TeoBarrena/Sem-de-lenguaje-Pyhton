@@ -1,25 +1,33 @@
 import PySimpleGUI as sg
-import io,io
+import os
+import io
 import json
 from PIL import Image
-import datetime
-import csv
-
+import cargar_csv_json as cargar
+import layout_editar_perfil as lay
 
 def abrir_foto(ruta_foto):
+    foto_default = os.path.join(os.getcwd(),"Fotos","usuario.png")
     """
     Se abre la foto desde la ruta (que debe ser pasada por parametro) solo para lectura en formato binario, de esa manera obteniendo los bytes respectivos de la imagen y 
     utilizando el PIL se lee y se la reacomoda en un tamaño de 200x200, guardandandola y enviando a traves del return los bytes de la imagen.
 """
-    with open(ruta_foto, 'rb') as file:
-        img_bytes = file.read()
-        image = Image.open(io.BytesIO(img_bytes))
-        image.thumbnail((200, 200))
-        bio = io.BytesIO()
-        image.save(bio, format='PNG')
-    return bio.getvalue()
+    try:
+        with open(ruta_foto, 'rb') as file:
+            img_bytes = file.read()
+            image = Image.open(io.BytesIO(img_bytes))
+            image.thumbnail((200, 200))
+            bio = io.BytesIO()
+            image.save(bio, format='PNG')
+        return bio.getvalue()
+    except FileNotFoundError:
+        sg.popup ("Error: No se encontró la imagen en la ruta especificada")
+    except Exception as e:
+        sg.popup ("Error desconocido: ",str(e))
+    return  foto_default
 
 def imagen(perfil):
+    try:
         with open(perfil, 'rb') as file:
             img_bytes = file.read()
             image = Image.open(io.BytesIO(img_bytes))
@@ -28,32 +36,29 @@ def imagen(perfil):
             image.save(bio, format='PNG')
             perfil = bio.getvalue()
         return perfil
+    except FileNotFoundError:
+        sg.popup ("Error: No se encontró la imagen en la ruta especificada")
+    except Exception as e:
+        sg.popup ("Error desconocido: ",str(e))
+    return None
 
 
 def editar_perfil(perfil):
+    """
+    Se ejecuta una ventana donde se muestra el alias del perfil, inmutable, y sus respectivos datos cargados anteriormente,
+    estos datos se pueden cambiar con nuevos datos, editando la informacion de ese perfil, en el archivo perfiles.json se 
+    reemplazara la informacion de ese usuario con la informacion nueva cargada, y en el archivo csv se informara en caso de 
+    que el usuario haya cambiado su foto
+    """
+
     cambio_foto = False
     datos_modificados = perfil
     foto = perfil['Foto']
     with open('perfiles.json') as archivo:
         contenido_archivo = json.load(archivo)
 
-    #layout
-    layout = [[sg.Text('Editar perfil',font=('Helvetica',15)),
-               sg.Button("< Volver", button_color=('black', 'white'),border_width=0,pad=(250,10),key='volver')],
-              [sg.Text('Nick o alias',font=('Helvetica',10))],
-              [sg.Text(perfil["Alias"],font=('Helvetica',15))],
-              [sg.Text('Nombre',font=('Helvetica',10))],
-              [sg.InputText(perfil["Nombre"])],
-              [sg.Text('Edad',font=('Helvetica',10))],
-              [sg.Input(perfil["Edad"])],
-              [sg.Text('Genero autopercibido',font=('Helvetica',10))],
-              [sg.Combo(['Masculino','Femenino','Otro'],default_value=perfil["Genero"],key='Genero',size=(30,1),readonly=True)], #combo es una lista desplegable
-              [sg.Image(imagen(perfil['Foto']),key='-AVATAR_IMAGE-',size=(150,100))],
-              [sg.Button("Seleccionar avatar",key='-AVATAR-')],
-              [sg.Button('Guardar',pad=(400,10),size=(8,2),button_color=('sky blue'))]
-             ]        
     #creacion ventana
-    window = sg.Window("Editar perfil",layout,size=(1366,768))
+    window = sg.Window("Editar perfil",lay.layout(perfil),size=(1366,768), element_justification='c', resizable=True )
     #ejecucion ventana
     while True:
         event,values = window.read()
@@ -81,7 +86,6 @@ def editar_perfil(perfil):
         if event == 'Guardar':
             
             nombre = values[0]
-            print(nombre)
             #verificacion edad sea un entero
             while True:
                 try:
@@ -95,17 +99,18 @@ def editar_perfil(perfil):
             #como guardar el genero
             if values['Genero'] == 'Otro':
                 genero = sg.popup_get_text("Complete manualmente su genero")
+                while genero is None or genero.strip() == '':
+                    # Se ejecuta si el usuario presiona Cancelar o no ingresa ningún valor.
+                    sg.popup('Debe ingresar un valor para su género')
+                    genero = sg.popup_get_text("Complete manualmente su genero")
             else:
                 genero = values['Genero']
             
             #verificacion para saber si hay que modificar la variable foto
             if cambio_foto:
                 foto = ruta_imagen
-                hora = datetime.datetime.now().time()
-                fecha = datetime.date.today().strftime("%d/%m/%Y")
-                with open ('perfiles.csv','a',newline='') as archivo:
-                    writer = csv.writer(archivo)
-                    writer.writerow([fecha,hora,perfil['Alias'],"Cambio de foto"]) 
+                
+                cargar.cargar_csv(perfil["Alias"],"Cambio foto")
                 
             #nuevos datos
             datos_modificados = {"Nombre":nombre,"Edad":edad,"Alias":perfil["Alias"],"Genero":genero,"Foto":foto}
@@ -121,5 +126,3 @@ def editar_perfil(perfil):
             break
     window.close()
     return datos_modificados
-
-

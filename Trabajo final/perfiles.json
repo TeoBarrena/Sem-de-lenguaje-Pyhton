@@ -1,72 +1,16 @@
 [
   {
-    "Nombre": "teo probando",
-    "Edad": 20244,
+    "Nombre": "teooo",
+    "Edad": 20,
     "Alias": "teo",
     "Genero": "Masculino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/meme3.png"
+    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/FwiOAZPXsAEmAT5.jpg"
   },
   {
-    "Nombre": "asdadssad",
-    "Edad": 192,
-    "Alias": "asdasdas",
-    "Genero": "Masculino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/flecha2.png"
-  },
-  {
-    "Nombre": "sadfasfdasfd",
+    "Nombre": "pooo",
     "Edad": 23,
-    "Alias": "asdasfasdf",
+    "Alias": "pooo",
     "Genero": "Masculino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gato.png"
-  },
-  {
-    "Nombre": "casdasdaa ",
-    "Edad": 322323,
-    "Alias": "asdasdaa",
-    "Genero": "Masculino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gif.gif"
-  },
-  {
-    "Nombre": "ksdkadskasdkaksd",
-    "Edad": 32,
-    "Alias": "sfdaasd",
-    "Genero": "Femenino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gatotriste.png"
-  },
-  {
-    "Nombre": "df1safafsadfsadf",
-    "Edad": 232312312,
-    "Alias": "asdfasdfas",
-    "Genero": "Femenino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gif.gif"
-  },
-  {
-    "Nombre": "jhhjkljhkljhklhjklhjklhjklhjklhjkl",
-    "Edad": 3242342342,
-    "Alias": "casdfssd",
-    "Genero": "Femenino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/meme3.png"
-  },
-  {
-    "Nombre": "gdfgdhffgh",
-    "Edad": 34,
-    "Alias": "csasafasdfsafdsdg",
-    "Genero": "Masculino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/meme2.png"
-  },
-  {
-    "Nombre": "xcvbxcvb",
-    "Edad": 12,
-    "Alias": "vcbxcvb",
-    "Genero": "Masculino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/gato.png"
-  },
-  {
-    "Nombre": "asdfasdf",
-    "Edad": 32,
-    "Alias": "cxvxcvxv",
-    "Genero": "Femenino",
-    "Foto": "C:/Users/usuario/Desktop/FACULTAD/2023/Python/TrabajoFinal/Fotos/ayudaa.png"
+    "Foto": "C:\\Users\\usuario\\Desktop\\FACULTAD\\2023\\Python\\TrabajoFinal\\Fotos\\usuario.png"
   }
 ]
