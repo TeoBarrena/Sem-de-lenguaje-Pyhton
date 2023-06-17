@@ -7,10 +7,10 @@ import csv
 import datetime
 import imghdr
 import json
-import utilidades.abrir_fotos as abrir
 import configuracion as configuracion
 import cargar_csv_json
 from utilidades import constantes as constante
+from utilidades import abrir_fotos
 from layouts import etiquetas as layout
 
 sg.theme('LightGrey4')
@@ -118,7 +118,7 @@ def eti(alias):
             #si seleccionamos un archivo de la lista
             try:
                 nombre_foto = os.path.join(values["-CARPETA-"], values["-ARCHIVOS-"][0]) #traemos la foto seleccionada
-                window["-IMAGEN-"].update(data=abrir(nombre_foto,(300, 300)))
+                window["-IMAGEN-"].update(data=abrir_fotos.abrir(nombre_foto,(300, 300)))
                 imagen = Image.open(nombre_foto)
                 #extraemos los metadatos de la foto cargada en la variable imagen
                 window["-METADATOS-"].update("| " + "x".join(map(str, imagen.size))  + " | " + str(os.stat(nombre_foto).st_size) + " | " + imghdr.what(nombre_foto) + " | ")
